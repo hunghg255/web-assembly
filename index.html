@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebAssembly</title>
+  </head>
+  <body>
+    <h1>WebAssembly</h1>
+
+    <script>
+      const loadWebAssembly = (fileName) =>
+        fetch(fileName)
+          .then((response) => response.arrayBuffer())
+          .then((bits) => WebAssembly.compile(bits))
+          .then((module) => {
+            return new WebAssembly.Instance(module);
+          });
+
+      let add;
+
+      loadWebAssembly('./add.wasm').then((instance) => {
+        add = instance.exports.add;
+        console.log('Ready!');
+      });
+
+      // document.getElementById('addBtn').addEventListener('click', () => {
+      //   let numA = document.getElementById('numA').value;
+      //   let numB = document.getElementById('numB').value;
+      //   document.getElementById('result').innerText = add(numA, numB);
+      // });
+    </script>
+  </body>
+</html>
